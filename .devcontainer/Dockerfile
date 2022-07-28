@@ -19,8 +19,12 @@ RUN if [ "${REINSTALL_CMAKE_VERSION_FROM_SOURCE}" != "none" ]; then \
 # RUN su vscode -c "${VCPKG_ROOT}/vcpkg install <your-port-name-here>"
 
 # [Optional] Uncomment this section to install additional packages.
-# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-#     && apt-get -y install --no-install-recommends <your-package-list-here>
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+ && apt-get -y install --no-install-recommends \
+    python3-pip
+
+RUN python3 -m pip install --upgrade pip \
+ && pip install conan
 
 ARG USERNAME=vscode
 ARG USER_UID=1026
