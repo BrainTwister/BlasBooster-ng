@@ -1,5 +1,7 @@
 #pragma once
 
+#include <typeinfo>
+
 /**
  * \brief Dense and sparse linear algebra operations.
  *
@@ -17,6 +19,12 @@ namespace BlasBooster {
 struct MatrixBase
 {
     virtual ~MatrixBase() {}
+
+    //virtual MatrixBase* clone() const = 0;
+
+    virtual const std::type_info& getTypeInfo() const = 0;
+
+    virtual size_t getTypeIndex() const = 0;
 };
 
 } // namespace BlasBooster

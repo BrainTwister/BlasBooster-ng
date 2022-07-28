@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Memory.h"
 #include "StripedIterator.h"
 #include "Utilities.h"
 #include <algorithm>
@@ -332,7 +333,7 @@ public:
     }
 
     /// Proxy constructor using external memory
-    Storage( T* ptrExternalData, size_t size )
+    Storage(T* ptrExternalData, size_t size)
      : data_(ptrExternalData), size_(size), ownMemory_(false)
     {}
 
