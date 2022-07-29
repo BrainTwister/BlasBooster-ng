@@ -9,7 +9,7 @@ namespace BlasBooster {
 struct DynamicMatrix
 {
     template <typename M, typename T>
-    DynamicMatrix(std::unique_ptr<Matrix<M,T>>&& ptr) : ptr(std::move(ptr)) {}
+    DynamicMatrix(Matrix<M,T>* ptr) : ptr(ptr) {}
     std::unique_ptr<MatrixBase> ptr;
 };
 

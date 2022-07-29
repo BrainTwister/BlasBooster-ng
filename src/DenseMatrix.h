@@ -182,18 +182,20 @@ public: // member functions
      : dimension(std::move(other)),
        storage(std::forward<storage>(other))
     {
-        debug_print("Matrix: Move constructor is called.");
+        debug_print("DenseMatrix: Move constructor was called.");
     }
 
     /// Default destructor
-    ~Matrix() = default;
+    ~Matrix() {
+        debug_print("DenseMatrix: Destructor was called.");
+    }
 
     /// Default copy assignment operator
     Matrix& operator = (self const& other) = default;
 
     /// Move assignment operator
     Matrix& operator = (self&& rhs) noexcept {
-        debug_print("Matrix: Move assignment operator is called.");
+        debug_print("DenseMatrix: Move assignment operator was called.");
         dimension::operator=(std::forward<dimension>(rhs));
         leadingDimension::operator=(std::forward<leadingDimension>(rhs));
         unblockedDimension::operator=(std::forward<unblockedDimension>(rhs));
