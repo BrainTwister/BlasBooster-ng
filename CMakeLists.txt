@@ -20,5 +20,5 @@ conan_cmake_run(CONANFILE conanfile.txt
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
-ENABLE_TESTING()
+enable_testing()
 add_subdirectory(tests)
