@@ -1,17 +1,7 @@
-FROM mcr.microsoft.com/devcontainers/cpp:0-ubuntu-22.04
+ARG VARIANT=ubuntu-22.04
+FROM mcr.microsoft.com/vscode/devcontainers/cpp:0-${VARIANT}
 
-ARG REINSTALL_CMAKE_VERSION_FROM_SOURCE="3.22.2"
-
-# Optionally install the cmake for vcpkg
-COPY ./reinstall-cmake.sh /tmp/
-
-RUN if [ "${REINSTALL_CMAKE_VERSION_FROM_SOURCE}" != "none" ]; then \
-        chmod +x /tmp/reinstall-cmake.sh && /tmp/reinstall-cmake.sh ${REINSTALL_CMAKE_VERSION_FROM_SOURCE}; \
-    fi \
-    && rm -f /tmp/reinstall-cmake.sh
-
-# [Optional] Uncomment this section to install additional vcpkg ports.
-# RUN su vscode -c "${VCPKG_ROOT}/vcpkg install <your-port-name-here>"
+LABEL maintainer="Bernd Doser <bernd.doser@braintwister.eu>"
 
 RUN apt-get update \
  && export DEBIAN_FRONTEND=noninteractive \
@@ -35,7 +25,21 @@ RUN apt-get update \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --upgrade pip \
- && hash -r pip3 \
- && pip install \
-      conan
+RUN python3 -m pip install --upgrade pip
+
+RUN pip install \
+      argparse \
+      black \
+      cmake \
+      conan \
+      matplotlib \
+      networkx \
+      numba \
+      numpy \
+      opencv-python \
+      pandas \
+      pylint \
+      pytest \
+      pyyaml \
+      scikit-learn \
+      scipy

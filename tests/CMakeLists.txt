@@ -1,18 +1,18 @@
 set(TestName CoreTest)
 
 include_directories(
-    ${CONAN_INCLUDE_DIRS}
     ${PROJECT_SOURCE_DIR}/src
 )
 
 add_executable(
     ${TestName}
-    main.cpp
+    test_dense.cpp
 )
 
 target_link_libraries(
     ${TestName}
-    ${CONAN_LIBS}
+    Catch2::Catch2WithMain
+    fmt::fmt
 )
 
 add_test(NAME ${TestName} COMMAND ${TestName})

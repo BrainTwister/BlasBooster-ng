@@ -7,6 +7,8 @@
 #include "Storage.h"
 #include "TypeName.h"
 #include "Utilities.h"
+#include <fmt/core.h>
+#include <fmt/ranges.h>
 #include <fstream>
 #include <initializer_list>
 #include <iomanip>
@@ -53,7 +55,7 @@ public: // member functions
     Matrix();
 
     /// Parameter constructor
-    Matrix(IndexType nbRows, IndexType nbColumns, auto const& filler);
+    Matrix(IndexType nbRows, IndexType nbColumns, auto&& filler = [](){});
 
     /// Parameter constructor for BlockedMatrix
     template <class U = T>
@@ -311,7 +313,7 @@ Matrix<Dense,T,P>::Matrix()
 {}
 
 template <class T, class P>
-Matrix<Dense,T,P>::Matrix(typename P::IndexType nbRows, typename P::IndexType nbColumns, auto const& filler)
+Matrix<Dense,T,P>::Matrix(typename P::IndexType nbRows, typename P::IndexType nbColumns, auto&& filler)
  : dimension(nbRows,nbColumns), storage(nbRows*nbColumns)
 {
     filler();
@@ -721,3 +723,26 @@ size_t Matrix<Dense,T,P>::getPosition(typename P::IndexType row, typename P::Ind
 }
 
 } // namespace BlasBooster
+
+/// Pretty printing
+template <class T, class P>
+struct fmt::formatter<BlasBooster::Matrix<BlasBooster::Dense,T,P>>
+{
+    char presentation = 'f';
+
+    template <typename ParseContext>
+    constexpr auto parse(ParseContext& ctx)
+    {
+        auto it = ctx.begin(), end = ctx.end();
+        if (it != end && (*it == 'f' || *it == 's')) presentation = *it++;
+        if (it != end && *it != '}') throw format_error("invalid format");
+        return it;
+    }
+
+    template <typename FormatContext>
+    auto format(BlasBooster::Matrix<BlasBooster::Dense,T,P> const& matrix, FormatContext& ctx)
+    {
+        //format_to(ctx.out(), "{}\n", matrix.getNbRows());
+        return ctx.out();
+    }
+};
