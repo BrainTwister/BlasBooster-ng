@@ -55,7 +55,7 @@ public: // member functions
     Matrix();
 
     /// Parameter constructor
-    Matrix(IndexType nbRows, IndexType nbColumns, auto&& filler = [](){});
+    Matrix(IndexType nbRows, IndexType nbColumns);
 
     /// Parameter constructor for BlockedMatrix
     template <class U = T>
@@ -313,11 +313,9 @@ Matrix<Dense,T,P>::Matrix()
 {}
 
 template <class T, class P>
-Matrix<Dense,T,P>::Matrix(typename P::IndexType nbRows, typename P::IndexType nbColumns, auto&& filler)
+Matrix<Dense,T,P>::Matrix(typename P::IndexType nbRows, typename P::IndexType nbColumns)
  : dimension(nbRows,nbColumns), storage(nbRows*nbColumns)
-{
-    filler();
-}
+{}
 
 template <class T, class P>
 template <class U>

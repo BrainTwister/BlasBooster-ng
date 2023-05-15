@@ -7,6 +7,8 @@ include_directories(
 add_executable(
     ${TestName}
     test_dense.cpp
+    test_dynamic.cpp
+    test_sparse.cpp
 )
 
 target_link_libraries(

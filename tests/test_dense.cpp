@@ -12,7 +12,7 @@ TEST_CASE("DenseMatrix default", "[double]")
 
 TEST_CASE("DenseMatrix 2x3", "[double]")
 {
-    bb::Matrix<bb::Dense, double> A(2, 3, [](){});
+    bb::Matrix<bb::Dense, double> A(2, 3);
     CHECK(A.getSize() == 6);
     // CHECK(bb::size(A) == 6);
 }
