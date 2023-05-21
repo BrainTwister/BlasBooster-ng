@@ -6,6 +6,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
 find_package(Catch2 REQUIRED)
 find_package(fmt REQUIRED)
+find_package(BLAS REQUIRED)
+find_package(xtensor REQUIRED)
 
 enable_testing()
 add_subdirectory(tests)

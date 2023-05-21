@@ -44,7 +44,6 @@ public:
          return *this;
     }
 
-#ifndef NO_INITIALIZER_LIST_SUPPORTED
     /// Initializer list constructor
     Storage(std::initializer_list<T> values)
      : data_()
@@ -53,7 +52,6 @@ public:
         size_t i(0);
         for (auto val : values) data_[i++] = val;
     }
-#endif
 
     bool operator == ( const self& rhs ) const {
         return data_ == rhs.data_ and size_ == rhs.size_;
@@ -135,7 +133,6 @@ public:
         debug_print("Storage (fixed,onHeap): Default constructor is called.");
     }
 
-#ifndef NO_INITIALIZER_LIST_SUPPORTED
     /// Initializer list constructor
     Storage( std::initializer_list<T> values )
      : data_(new T[size_]), ownMemory_(true)
@@ -145,7 +142,6 @@ public:
         size_t i(0);
         for ( auto val : values ) data_[i++] = val;
     }
-#endif
 
     /// Copy constructor
     Storage( const Storage& rhs )
@@ -294,7 +290,6 @@ public:
         debug_print("Storage (onHeap): Parameter constructor is called.");
     }
 
-#ifndef NO_INITIALIZER_LIST_SUPPORTED
     /// Initializer list constructor
     Storage(std::initializer_list<T> values)
      : data_(allocate<T>(values.size())), size_(values.size()), ownMemory_(true)
@@ -303,7 +298,6 @@ public:
         size_t i(0);
         for ( auto val : values ) data_[i++] = val;
     }
-#endif
 
     /// Copy constructor
     Storage(Storage const& rhs)

@@ -1,7 +1,8 @@
 [requires]
 catch2/3.3.2
 fmt/10.0.0
-#openblas/0.3.20
+xtensor/0.24.3
+xsimd/10.0.0
 
 [generators]
 CMakeDeps

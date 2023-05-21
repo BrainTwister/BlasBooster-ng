@@ -9,12 +9,14 @@ add_executable(
     test_dense.cpp
     test_dynamic.cpp
     test_sparse.cpp
+    test_xtensor.cpp
 )
 
 target_link_libraries(
     ${TestName}
     Catch2::Catch2WithMain
     fmt::fmt
+    xtensor
 )
 
 add_test(NAME ${TestName} COMMAND ${TestName})

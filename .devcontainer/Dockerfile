@@ -13,6 +13,7 @@ RUN apt-get update \
        dirmngr \
        ffmpeg \
        git \
+       libopenblas-dev \
        libsm6 \
        libxext6 \
        python3 \

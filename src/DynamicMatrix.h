@@ -16,6 +16,7 @@ struct DynamicMatrix
 private:
 
     std::unique_ptr<MatrixBase> ptr;
+    
 };
 
 template <typename T, typename... Args>

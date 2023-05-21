@@ -66,17 +66,13 @@ public: // member functions
     /// Parameter constructor using external memory
     Matrix(IndexType nbRows, IndexType nbColumns, T* ptrExternalMemory);
 
-#ifndef NO_INITIALIZER_LIST_SUPPORTED
     /// Initializer list constructor
-    template <class U = T>
-    Matrix(std::initializer_list< std::initializer_list<T> > values,
-        typename std::enable_if<!std::is_same<U, DynamicMatrix>::value>::type* = 0);
+    Matrix(std::initializer_list<std::initializer_list<T>> values);
 
     /// Initializer constructor for BlockedMatrix
-    template <class U = T>
-    Matrix(std::initializer_list< std::initializer_list<T> > values,
-        typename std::enable_if<std::is_same<U, DynamicMatrix>::value>::type* = 0);
-#endif
+    // template <class U = T>
+    // Matrix(std::initializer_list< std::initializer_list<T> > values,
+    //     typename std::enable_if<std::is_same<U, DynamicMatrix>::value>::type* = 0);
 
     /// Submatrix constructor, use storage of reference matrix, ColumnMajor
     template <class T2, class P2, class U = P>
@@ -334,28 +330,16 @@ Matrix<Dense,T,P>::Matrix(typename P::IndexType nbRows, typename P::IndexType nb
    storage(ptrExternalMemory,nbRows*nbColumns)
 {}
 
-// #ifndef NO_INITIALIZER_LIST_SUPPORTED
-// template <class T, class P>
-// template <class U>
-// Matrix<Dense,T,P>::Matrix(std::initializer_list< std::initializer_list<T> > values,
-//     typename std::enable_if<!std::is_same<U, DynamicMatrix>::value>::type*)
-//  : dimension(values.size(),values.begin()->size()),
-//    storage(values.size() * values.begin()->size())
-// {
-//     typedef Cursor<Matrix<Dense,T,P>, Direction::Row> RowCursor;
-//     typedef Cursor<RowCursor, Direction::Column> ColumnCursor;
-
-//     auto val1 = values.begin();
-//     for (RowCursor rowCur(*this,0), rowEnd(*this,this->getNbRows()); rowCur != rowEnd; ++rowCur, ++val1 )
-//     {
-//         auto val2 = val1->begin();
-//         for ( ColumnCursor columnCur(*this,rowCur.begin()),
-//             columnEnd(*this,rowCur.end()); columnCur != columnEnd; ++columnCur, ++val2 )
-//         {
-//             *columnCur = *val2;
-//         }
-//     }
-// }
+template <class T, class P>
+Matrix<Dense,T,P>::Matrix(std::initializer_list<std::initializer_list<T>> values)
+ : dimension(values.size(), values.begin()->size()),
+   storage(values.size() * values.begin()->size())
+{
+    for (auto const& inner : values)
+    {
+        std::memcpy(this->data_, inner.begin(), inner.size());
+    }
+}
 
 // template <class T, class P>
 // template <class U>
@@ -364,28 +348,27 @@ Matrix<Dense,T,P>::Matrix(typename P::IndexType nbRows, typename P::IndexType nb
 //  : dimension(values.size(),values.begin()->size()),
 //    storage(values.size() * values.begin()->size())
 // {
-//     typedef Cursor<Matrix<Dense,T,P>, Direction::Row> RowCursor;
-//     typedef Cursor<RowCursor, Direction::Column> ColumnCursor;
+//     // typedef Cursor<Matrix<Dense,T,P>, Direction::Row> RowCursor;
+//     // typedef Cursor<RowCursor, Direction::Column> ColumnCursor;
 
-//     auto val1 = values.begin();
-//     typename P::IndexType ubRowsTmp, ubColumnsTmp;
-//     for (RowCursor rowCur(*this,0), rowEnd(*this,this->getNbRows()); rowCur != rowEnd; ++rowCur, ++val1)
-//     {
-//         auto val2 = val1->begin();
-//         ubRowsTmp = getNbRows(*val2);
-//         this->ubRows_ += ubRowsTmp;
-//         ubColumnsTmp = 0;
-//         for (ColumnCursor columnCur(*this,rowCur.begin()),
-//             columnEnd(*this,rowCur.end()); columnCur != columnEnd; ++columnCur, ++val2)
-//         {
-//             *columnCur = *val2;
-//             if (ubRowsTmp != getNbRows(*val2)) throw std::runtime_error("wrong sub-dimension");
-//             ubColumnsTmp += getNbColumns(*val2);
-//         }
-//         this->ubColumns_ = ubColumnsTmp;
-//     }
+//     // auto val1 = values.begin();
+//     // typename P::IndexType ubRowsTmp, ubColumnsTmp;
+//     // for (RowCursor rowCur(*this,0), rowEnd(*this,this->getNbRows()); rowCur != rowEnd; ++rowCur, ++val1)
+//     // {
+//     //     auto val2 = val1->begin();
+//     //     ubRowsTmp = getNbRows(*val2);
+//     //     this->ubRows_ += ubRowsTmp;
+//     //     ubColumnsTmp = 0;
+//     //     for (ColumnCursor columnCur(*this,rowCur.begin()),
+//     //         columnEnd(*this,rowCur.end()); columnCur != columnEnd; ++columnCur, ++val2)
+//     //     {
+//     //         *columnCur = *val2;
+//     //         if (ubRowsTmp != getNbRows(*val2)) throw std::runtime_error("wrong sub-dimension");
+//     //         ubColumnsTmp += getNbColumns(*val2);
+//     //     }
+//     //     this->ubColumns_ = ubColumnsTmp;
+//     // }
 // }
-// #endif
 
 // Submatrix constructor, use storage of reference matrix, ColumnMajor
 template <class T, class P>
